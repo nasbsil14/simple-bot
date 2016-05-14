@@ -1,3 +1,3 @@
-package bot.data_format.json
+package bot.slack.io.json
 
 final case class BotResponse (msg: String)

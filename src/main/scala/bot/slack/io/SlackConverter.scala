@@ -1,23 +1,22 @@
-package bot.data_format
+package bot.slack.io
 
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
 import akka.http.scaladsl.model.FormData
 import akka.http.scaladsl.unmarshalling._
-import bot.data_format.json._
+import bot.external.io.json._
+import bot.external.io.json.NTTAPIResponse
+import bot.slack.io.json.{SlackWebhookResponse, BotResponse, BotRequest}
 import com.typesafe.config.Config
 import spray.json._
 
-trait Converters extends SprayJsonSupport with DefaultJsonProtocol {
+trait SlackConverter extends SprayJsonSupport with DefaultJsonProtocol {
   def config: Config
 
   implicit val botRequestFormatter = jsonFormat1(BotRequest)
   implicit val botResponseFormatter = jsonFormat1(BotResponse)
 
-  implicit val extRequestFormatter = jsonFormat14(ExtRequest)
-  implicit val extResponseFormatter = jsonFormat1(ExtResponse)
-
-  implicit val NTTAPIRequestFormatter = jsonFormat14(NTTAPIRequest)
-  implicit val NTTAPIResponseFormatter = jsonFormat5(NTTAPIResponse)
+  implicit val nttAPIRequestFormatter = jsonFormat14(NTTAPIRequest)
+  implicit val nttAPIResponseFormatter = jsonFormat5(NTTAPIResponse)
 
   implicit val slackWebHookRequestUnmarshaller: FromEntityUnmarshaller[SlackWebhookRequest] = {
     PredefinedFromEntityUnmarshallers.defaultUrlEncodedFormDataUnmarshaller.map { data: FormData =>

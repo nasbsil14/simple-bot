@@ -8,15 +8,12 @@ import akka.http.scaladsl.model.HttpEntity._
 import akka.http.scaladsl.model._
 import akka.stream.ActorMaterializer
 import akka.stream.scaladsl.{Flow, Sink, Source}
-import akka.http.scaladsl.unmarshalling.Unmarshal
-import bot.data_format.{SlackWebhookRequest, Converters}
+import bot.services.SlackBotService
 import com.typesafe.config.{Config, ConfigFactory}
-import bot.data_format.json._
-import spray.json._
 
 import scala.concurrent.{ExecutionContextExecutor, Future}
 
-trait BotService extends Converters {
+trait BotService {
   implicit val system: ActorSystem
   implicit val materializer: ActorMaterializer
 
@@ -29,40 +26,9 @@ trait BotService extends Converters {
   val bindingFuture: Future[Http.ServerBinding]
 
   lazy val http = Http(system)
-  val requestHandler: HttpRequest => Future[HttpResponse] = {
+  val requestHandler: HttpRequest => Future[HttpResponse]= {
     case HttpRequest(GET, Uri.Path("/"), _, _, _) => {
-      println("request")
-      val extRequest = NTTAPIRequest("hello", "", "", "", "", "", "", "", "", "", "", "", "", "")
-      http.singleRequest(HttpRequest(method = POST
-      , uri = s"""${config.getString("external_api.uri")}?${config.getString("external_api.apikey")}"""
-      , entity = HttpEntity(ContentType(MediaTypes.`application/json`), extRequest.toJson.prettyPrint)))
-    }
-    case request@HttpRequest(POST, Uri.Path("/"), _, _, _) => {
-      println("request:" + request)
-      val botReq = Unmarshal(request.entity).to[SlackWebhookRequest]
-      for {
-        botData <- botReq
-        apiRes <- {
-          println(botData.text)
-          val extRequest = NTTAPIRequest(botData.text, "", "", "", "", "", "", "", "", "", "", "", "", "")
-          http.singleRequest(HttpRequest(method = POST
-            , uri = s"""${config.getString("external_api.uri")}?${config.getString("external_api.apikey")}"""
-            , entity = HttpEntity(ContentType(MediaTypes.`application/json`), extRequest.toJson.prettyPrint)))
-        }
-        resData <- Unmarshal(apiRes).to[NTTAPIResponse]
-      } yield {
-        HttpResponse(200, entity = HttpEntity(ContentType(MediaTypes.`application/json`), SlackWebhookResponse(resData.utt).toJson.prettyPrint))
-      }
-    }
-    case r@HttpRequest(POST, Uri.Path("/msg"), _, _, _) => {
-      println(r.entity)
-      val botReq = Unmarshal(r).to[BotRequest]
-      botReq.flatMap { req =>
-        val extRequest = ExtRequest(req.msg, "", "", "", "", "", "", "", "", "", "", "", "", "")
-        http.singleRequest(HttpRequest(method = POST
-          , uri = s"""${config.getString("external_api.uri")}?${config.getString("external_api.apikey")}"""
-          , entity = HttpEntity(ContentType(MediaTypes.`application/json`), extRequest.toJson.prettyPrint)))
-      }
+      Future(HttpResponse(200, entity = "OK"))
     }
     case _: HttpRequest => {
       Future(HttpResponse(404, entity = "Not Found."))
@@ -79,7 +45,7 @@ trait BotService extends Converters {
   }
 }
 
-object Bot extends App with BotService {
+object Bot extends App with BotService {self: SlackBotService =>
   override implicit val system = ActorSystem()
   override implicit val executor = system.dispatcher
   override implicit val materializer = ActorMaterializer()
@@ -92,7 +58,7 @@ object Bot extends App with BotService {
 
   override val bindingFuture: Future[Http.ServerBinding] = serverSource.to(connectionHandler).run()
 
-  println("Server online at http://127.0.0.1:9000/\nPress RETURN to stop...")
+  println(s"""Server online at http://${config.getString("http.interface")}:${config.getInt("http.port")}/\nPress RETURN to stop...""")
   scala.io.StdIn.readLine()
 
   bindingFuture

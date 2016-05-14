@@ -1,4 +1,4 @@
-package bot.data_format
+package bot.slack.io
 
 final case class SlackWebhookRequest(
                                       token: String,

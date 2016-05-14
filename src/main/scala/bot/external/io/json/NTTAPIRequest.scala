@@ -1,6 +1,6 @@
-package bot.data_format.json
+package bot.external.io.json
 
-final case class ExtRequest(
+final case class NTTAPIRequest(
                              utt: String,
                              context: String,
                              nickname: String,
