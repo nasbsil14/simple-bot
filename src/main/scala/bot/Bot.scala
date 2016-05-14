@@ -62,6 +62,6 @@ object Bot extends App with BotService {self: SlackBotService =>
   scala.io.StdIn.readLine()
 
   bindingFuture
-    .flatMap(_.unbind()) // まずポートのバインドを解除
-    .onComplete(_ => system.terminate()) // 次にアクターシステムを終了
+    .flatMap(_.unbind())
+    .onComplete(_ => system.terminate())
 }
