@@ -18,14 +18,14 @@ class Server {
 
     // HTTP コネクションの発生源 (Source)
     val serverSource: Source[Http.IncomingConnection, Future[Http.ServerBinding]] =
-      Http().bind(interface = "192.168.10.3", port = 9000)
+      Http().bind(interface = "127.0.0.1", port = 9000)
 
     // 下記 `map` で使用される関数
     val requestHandler: HttpRequest => HttpResponse = {
       case HttpRequest(GET, Uri.Path("/"), _, req, _) => {
         println("get request:" + req)
-//        val client: Client = new Client
-//        client.send()
+        //        val client: Client = new Client
+        //        client.send()
         HttpResponse(entity = "ok")
       }
       case HttpRequest(POST, Uri.Path("/"), _, req, _) => {
@@ -44,13 +44,21 @@ class Server {
       }
     }
 
+    val requestHandler2: HttpResponse => HttpResponse = {req =>
+      println("req2")
+      req
+    }
+
+    val logicFlow: Flow[HttpRequest, HttpResponse, _] = Flow[HttpRequest].map(requestHandler) via Flow[HttpResponse].map(requestHandler2)
+
     // HTTP コネクションが処理される出口 (Sink)
     val connectionHandler: Sink[Http.IncomingConnection, _] = Sink.foreach { connection: Http.IncomingConnection =>
       println("Accepted new connection from " + connection.remoteAddress)
 
       // コネクション内の HTTP リクエストが処理される出口 (Flow + Sink = Sink)
       connection.handleWith {
-        Flow[HttpRequest].map(requestHandler)
+        logicFlow
+        //Flow[HttpRequest].map(requestHandler)
       }
     }
 

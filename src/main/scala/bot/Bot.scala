@@ -22,25 +22,28 @@ trait BotService {
   def config: Config
   val logger: LoggingAdapter
 
-  val serverSource: Source[Http.IncomingConnection, Future[Http.ServerBinding]]
-  val bindingFuture: Future[Http.ServerBinding]
+//  val serverSource: Source[Http.IncomingConnection, Future[Http.ServerBinding]]
+//  val bindingFuture: Future[Http.ServerBinding]
 
-  lazy val http = Http(system)
-  val requestHandler: HttpRequest => Future[HttpResponse]= {
+//  lazy val http = Http(system)
+  val requestHandler: HttpRequest => HttpResponse = {
     case HttpRequest(GET, Uri.Path("/"), _, _, _) => {
-      Future(HttpResponse(200, entity = "OK"))
+      HttpResponse(200, entity = "OK")
     }
     case _: HttpRequest => {
-      Future(HttpResponse(404, entity = "Not Found."))
+      HttpResponse(404, entity = "Not Found.")
     }
   }
+
+  val flow = Flow[HttpRequest].map(requestHandler)
 
   val connectionHandler: Sink[Http.IncomingConnection, _] = Sink.foreach { connection: Http.IncomingConnection =>
     println("Accepted new connection from " + connection.remoteAddress)
 
     connection.handleWith {
-      //TODO mapAsyncでFuture返す関数使えるようにする。parallelismはひとまず1
-      Flow[HttpRequest].mapAsync(1)(requestHandler)
+      flow
+//      //TODO mapAsyncでFuture返す関数使えるようにする。parallelismはひとまず1
+//      Flow[HttpRequest].mapAsync(1)(requestHandler)
     }
   }
 }
@@ -53,10 +56,10 @@ object Bot extends App with BotService {self: SlackBotService =>
   override val config = ConfigFactory.load()
   override val logger = Logging(system, getClass)
 
-  override val serverSource: Source[Http.IncomingConnection, Future[Http.ServerBinding]] =
+  val serverSource: Source[Http.IncomingConnection, Future[Http.ServerBinding]] =
     Http().bind(interface = config.getString("http.interface"), port = config.getInt("http.port"))
 
-  override val bindingFuture: Future[Http.ServerBinding] = serverSource.to(connectionHandler).run()
+  val bindingFuture: Future[Http.ServerBinding] = serverSource.to(connectionHandler).run()
 
   println(s"""Server online at http://${config.getString("http.interface")}:${config.getInt("http.port")}/\nPress RETURN to stop...""")
   scala.io.StdIn.readLine()
