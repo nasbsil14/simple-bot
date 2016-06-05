@@ -14,7 +14,8 @@ libraryDependencies ++= {
     "com.typesafe.akka" %% "akka-http-xml-experimental" % akkaVersion,
     "com.typesafe.akka" %% "akka-http-testkit" % akkaVersion,
     "org.scalatest"     %% "scalatest" % scalaTestVersion % "test",
-    "org.specs2" %% "specs2-core" % "3.8.3" % "test"
+    "org.specs2" %% "specs2-core" % "3.8.3" % "test",
+    "org.mockito" % "mockito-core" % "1.10.19" % "test"
   )
 }
     

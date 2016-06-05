@@ -5,7 +5,7 @@ import spray.json._
 import DefaultJsonProtocol._
 
 object Main extends App {
-      val server: Server = new Server
+      val server: Server2 = new Server2
       server.service()
 
   //    val source = """{"msg": "json source"}"""
