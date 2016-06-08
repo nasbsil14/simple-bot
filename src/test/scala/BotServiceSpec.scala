@@ -3,6 +3,7 @@ import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
 import akka.http.scaladsl.model.ContentTypes._
 import akka.http.scaladsl.model.{HttpResponse, HttpRequest}
 import akka.http.scaladsl.model.StatusCodes._
+import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.testkit.ScalatestRouteTest
 import akka.stream.scaladsl.{Flow, Sink}
 import bot.BotService
@@ -15,14 +16,8 @@ class BotServiceSpec extends FlatSpec with Matchers with ScalatestRouteTest with
   override def config = testConfig
   override val logger = NoLogging
 
-//  "Service" should "return OK response" in {
-//    Get("/") -> requestHandler -> check {
-//      status shouldBe OK
-//    }
-//  }
-
-  it should "return OK response" in {
-    Get("/") -> requestHandler -> check {
+  "Service" should "return OK response" in {
+    Get("/") ~> routes ~> check {
       status shouldBe OK
     }
   }
