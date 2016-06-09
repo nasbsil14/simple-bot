@@ -11,8 +11,8 @@ import akka.http.scaladsl.unmarshalling.Unmarshal
 import akka.stream.scaladsl.{Sink, Source, Flow}
 import bot.BotService
 import bot.external.io.json.{NTTAPIResponse, NTTAPIRequest}
-import bot.slack.io.json.SlackWebhookResponse
-import bot.slack.io.{SlackWebhookRequest, SlackConverter}
+import bot.slack.io.json.{SlackWebhookRequest, SlackWebhookResponse}
+import bot.slack.io.SlackConverter
 import spray.json._
 import akka.http.scaladsl.client.RequestBuilding
 import akka.http.scaladsl.model.StatusCodes._
@@ -22,28 +22,28 @@ import scala.concurrent.{Await, Future, ExecutionContextExecutor}
 
 trait SlackBotService extends BotService with SlackConverter {
 
-    lazy val extApiConnectionFlow: Flow[HttpRequest, HttpResponse, Any] =
-      Http().outgoingConnection(config.getString("external_api.uri"))
+  lazy val extApiConnectionFlow: Flow[HttpRequest, HttpResponse, Any] =
+    Http().outgoingConnection(config.getString("external_api.uri"))
 
-    //外部連携stream
-    def extApiRequest(request: HttpRequest): Future[HttpResponse] = Source.single(request).via(extApiConnectionFlow).runWith(Sink.head)
+  //外部連携stream
+  def extApiRequest(request: HttpRequest): Future[HttpResponse] = Source.single(request).via(extApiConnectionFlow).runWith(Sink.head)
 
-    //主処理
-    def extConnect(msg: String): Future[Either[String, NTTAPIResponse]] = {
-      //外部連携
-      val extRequest = NTTAPIRequest(msg, "", "", "", "", "", "", "", "", "", "", "", "", "")
-      extApiRequest(RequestBuilding.Post(s"/?${config.getString("external_api.apikey")}", HttpEntity(ContentType(MediaTypes.`application/json`), extRequest.toJson.prettyPrint))).flatMap { response =>
-        response.status match {
-          case OK => Unmarshal(response.entity).to[NTTAPIResponse].map(Right(_))
-          case BadRequest => Future.successful(Left(s"extra connect failure"))
-          case _ => Unmarshal(response.entity).to[String].flatMap { entity =>
-            val error = s"request failed with status code ${response.status} and entity $entity"
-            logger.error(error)
-            Future.failed(new IOException(error))
-          }
+  //主処理
+  def extConnect(msg: String): Future[Either[String, NTTAPIResponse]] = {
+    //外部連携
+    val extRequest = NTTAPIRequest(msg, "", "", "", "", "", "", "", "", "", "", "", "", "")
+    extApiRequest(RequestBuilding.Post(s"/?${config.getString("external_api.apikey")}", HttpEntity(ContentType(MediaTypes.`application/json`), extRequest.toJson.prettyPrint))).flatMap { response =>
+      response.status match {
+        case OK => Unmarshal(response.entity).to[NTTAPIResponse].map(Right(_))
+        case BadRequest => Future.successful(Left(s"extra connect failure"))
+        case _ => Unmarshal(response.entity).to[String].flatMap { entity =>
+          val error = s"request failed with status code ${response.status} and entity $entity"
+          logger.error(error)
+          Future.failed(new IOException(error))
         }
       }
     }
+  }
 
   override val routes = {
     logRequestResult("Slack Bot Service") {

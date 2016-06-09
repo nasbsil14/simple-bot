@@ -5,15 +5,12 @@ import akka.http.scaladsl.model.FormData
 import akka.http.scaladsl.unmarshalling._
 import bot.external.io.json._
 import bot.external.io.json.NTTAPIResponse
-import bot.slack.io.json.{SlackWebhookResponse, BotResponse, BotRequest}
+import bot.slack.io.json.{SlackWebhookRequest, SlackWebhookResponse}
 import com.typesafe.config.Config
 import spray.json._
 
 trait SlackConverter extends SprayJsonSupport with DefaultJsonProtocol {
   def config: Config
-
-  implicit val botRequestFormatter = jsonFormat1(BotRequest)
-  implicit val botResponseFormatter = jsonFormat1(BotResponse)
 
   implicit val nttAPIRequestFormatter = jsonFormat14(NTTAPIRequest)
   implicit val nttAPIResponseFormatter = jsonFormat5(NTTAPIResponse)
@@ -35,6 +32,6 @@ trait SlackConverter extends SprayJsonSupport with DefaultJsonProtocol {
         , data.fields.getOrElse("trigger_word",""))
     }
   }
-  //implicit val SlackWebhookRequestFormatter = jsonFormat11(SlackWebhookRequest)
-  implicit val SlackWebhookResponseFormatter = jsonFormat1(SlackWebhookResponse)
+  //implicit val slackWebhookRequestFormatter = jsonFormat11(SlackWebhookRequest)
+  implicit val slackWebhookResponseFormatter = jsonFormat1(SlackWebhookResponse)
 }

@@ -4,8 +4,7 @@ import akka.http.scaladsl.model.StatusCodes._
 import akka.http.scaladsl.testkit.ScalatestRouteTest
 import bot.BotService
 import bot.services.SlackBotService
-import bot.slack.io.SlackWebhookRequest
-import bot.slack.io.json.{BotRequest, SlackWebhookResponse}
+import bot.slack.io.json.{SlackWebhookRequest, SlackWebhookResponse}
 import org.scalatest._
 import spray.json._
 import akka.http.scaladsl.model._

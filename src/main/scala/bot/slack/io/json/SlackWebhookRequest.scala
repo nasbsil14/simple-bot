@@ -1,4 +1,4 @@
-package bot.slack.io
+package bot.slack.io.json
 
 final case class SlackWebhookRequest(
                                       token: String,
