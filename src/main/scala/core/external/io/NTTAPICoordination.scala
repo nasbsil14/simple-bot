@@ -1,4 +1,4 @@
-package bot.external.io
+package core.external.io
 
 import java.io.IOException
 
@@ -11,7 +11,7 @@ import akka.http.scaladsl.model._
 import akka.http.scaladsl.unmarshalling.Unmarshal
 import akka.stream.ActorMaterializer
 import akka.stream.scaladsl.{Flow, Sink, Source}
-import bot.external.io.json.{NTTAPIRequest, NTTAPIResponse}
+import core.external.io.json.{NTTAPIRequest, NTTAPIResponse}
 import com.typesafe.config.Config
 import spray.json._
 

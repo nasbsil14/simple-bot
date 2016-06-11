@@ -1,4 +1,4 @@
-package bot.typetalk.io.json
+package core.typetalk.io.json
 
 case class PostEntyity(
                         id: String,

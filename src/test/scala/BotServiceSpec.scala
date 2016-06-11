@@ -6,7 +6,7 @@ import akka.http.scaladsl.model.StatusCodes._
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.testkit.ScalatestRouteTest
 import akka.stream.scaladsl.{Flow, Sink}
-import bot.BotService
+import experiment.BotService
 import org.scalatest._
 
 import scalaz.concurrent.Future

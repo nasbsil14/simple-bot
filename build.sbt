@@ -18,4 +18,11 @@ libraryDependencies ++= {
     "org.mockito" % "mockito-core" % "1.10.19" % "test"
   )
 }
-    
+
+lazy val core = (project in file("src/main/scala/core")).settings()
+lazy val slack_bot = (project in file("src/main/scala/slack")).settings(
+  javacOptions += "-Dconfig.resource=slack-application.conf"
+).dependsOn("core")
+lazy val typetalk_bot = (project in file("src/main/scala/typetalk")).settings(
+  javacOptions += "-Dconfig.resource=typetalk-application.conf"
+).dependsOn("core")

@@ -1,7 +1,7 @@
-package bot.typetalk.io
+package core.typetalk.io
 
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
-import bot.typetalk.io.json._
+import core.typetalk.io.json._
 import com.typesafe.config.Config
 import spray.json._
 

@@ -1,10 +1,10 @@
-package bot.external.io
+package core.external.io
 
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
 import akka.http.scaladsl.model.FormData
 import akka.http.scaladsl.unmarshalling._
-import bot.external.io.json.{NTTAPIResponse, _}
-import bot.slack.io.json.{SlackWebhookRequest, SlackWebhookResponse}
+import core.external.io.json.{NTTAPIResponse, _}
+import core.slack.io.json.{SlackWebhookRequest, SlackWebhookResponse}
 import com.typesafe.config.Config
 import spray.json._
 

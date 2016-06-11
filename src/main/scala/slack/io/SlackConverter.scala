@@ -1,9 +1,9 @@
-package bot.slack.io
+package core.slack.io
 
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
 import akka.http.scaladsl.model.FormData
 import akka.http.scaladsl.unmarshalling._
-import bot.slack.io.json.{SlackWebhookRequest, SlackWebhookResponse}
+import core.slack.io.json.{SlackWebhookRequest, SlackWebhookResponse}
 import com.typesafe.config.Config
 import spray.json._
 

@@ -1,3 +1,3 @@
-package bot.slack.io.json
+package core.slack.io.json
 
 final case class SlackWebhookResponse(text: String)

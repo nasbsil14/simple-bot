@@ -1,4 +1,4 @@
-package bot
+package experiment
 
 import akka.actor.ActorSystem
 import akka.event.{Logging, LoggingAdapter}

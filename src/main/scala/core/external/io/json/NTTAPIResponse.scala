@@ -1,4 +1,4 @@
-package bot.external.io.json
+package core.external.io.json
 
 final case class NTTAPIResponse(
                                  utt: String,

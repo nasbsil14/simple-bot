@@ -2,10 +2,10 @@ import akka.event.NoLogging
 import akka.http.scaladsl.model.{MediaTypes, ContentType, HttpEntity}
 import akka.http.scaladsl.model.StatusCodes._
 import akka.http.scaladsl.testkit.ScalatestRouteTest
-import bot.BotService
-import bot.services.SlackBotService
-import bot.slack.io.json.{SlackWebhookRequest, SlackWebhookResponse}
+import core.slack.io.json.{SlackWebhookRequest, SlackWebhookResponse}
+import experiment.BotService
 import org.scalatest._
+import slack.io.service.SlackBotService
 import spray.json._
 import akka.http.scaladsl.model._
 
