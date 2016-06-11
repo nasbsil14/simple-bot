@@ -20,9 +20,9 @@ libraryDependencies ++= {
 }
 
 lazy val core = (project in file("src/main/scala/core")).settings()
-lazy val slack_bot = (project in file("src/main/scala/slack")).settings(
+lazy val slack_bot = Project("slack-bot", file("src/main/scala/slack")).settings(
   javacOptions += "-Dconfig.resource=slack-application.conf"
 ).dependsOn("core")
-lazy val typetalk_bot = (project in file("src/main/scala/typetalk")).settings(
+lazy val typetalk_bot = Project("typetalk-bot", file("src/main/scala/typetalk")).settings(
   javacOptions += "-Dconfig.resource=typetalk-application.conf"
 ).dependsOn("core")
