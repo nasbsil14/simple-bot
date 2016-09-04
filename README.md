@@ -9,6 +9,7 @@
 # Tech
 scala 2.11.8
 akka-http
+sbtマルチプロジェクト
 
 # Tests
 まだない
