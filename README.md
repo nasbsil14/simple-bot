@@ -7,9 +7,9 @@
 * DocomoAPI連携で対話実現
 
 # Tech
-scala 2.11.8
-akka-http
-sbtマルチプロジェクト
+* scala 2.11.8
+* akka-http
+* sbtマルチプロジェクト
 
 # Tests
 まだない
