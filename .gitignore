@@ -1,0 +1,26 @@
+# Created by .ignore support plugin (hsz.mobi)
+.DS_Store
+.idea/
+project/
+src/main/java/
+src/main/scala-2.10/
+src/main/scala-2.11/
+src/test/java/
+src/test/resources/
+src/test/scala-2.10/
+src/test/scala-2.11/
+target/
+modules/core/src/main/java/
+modules/core/src/main/scala-2.11/
+modules/core/src/test/java/
+modules/core/src/test/resources/
+modules/core/src/test/scala-2.11/
+modules/slack_bot/src/main/java/
+modules/slack_bot/src/main/scala-2.11/
+modules/slack_bot/src/main/scala/typetalk_bot/
+modules/slack_bot/src/test/java/
+modules/slack_bot/src/test/resources/
+modules/slack_bot/src/test/scala-2.11/
+modules/typetalk_bot/src/main/java/
+modules/typetalk_bot/src/main/scala-2.11/
+modules/typetalk_bot/src/test/
