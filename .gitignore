@@ -24,3 +24,4 @@ modules/slack_bot/src/test/scala-2.11/
 modules/typetalk_bot/src/main/java/
 modules/typetalk_bot/src/main/scala-2.11/
 modules/typetalk_bot/src/test/
+/*.iml
