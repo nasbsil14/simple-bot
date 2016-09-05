@@ -3,6 +3,7 @@ package core.external.io.json
 final case class NTTAPIRequest(
                              utt: String,
                              context: String,
+                             user: String,
                              nickname: String,
                              nickname_y: String,
                              sex: String,

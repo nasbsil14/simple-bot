@@ -36,7 +36,7 @@ trait NTTAPICoordination extends NTTAPIConverter {
   //主処理
   def externalApiConnect(msg: String): Future[Either[String, NTTAPIResponse]] = {
     //外部連携
-    val request = NTTAPIRequest(msg, "", "", "", "", "", "", "", "", "", "", "", "", "")
+    val request = NTTAPIRequest(msg, "", "", "", "", "", "", "", "", "", "", "", "", "", "")
     externalApiRequest(RequestBuilding.Post(s"/?${config.getString("external_api.apikey")}", HttpEntity(ContentType(MediaTypes.`application/json`), request.toJson.prettyPrint))).flatMap { response =>
       response.status match {
         case OK => Unmarshal(response.entity).to[NTTAPIResponse].map(Right(_))
