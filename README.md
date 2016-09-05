@@ -12,7 +12,7 @@
 * sbtマルチプロジェクト
 
 # Tests
-まだない
+seviceとjson Formatterを少し
 
 # Remarks
 typetakで動くことは動いた・・・でも未完。
